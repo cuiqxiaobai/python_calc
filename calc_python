@@ -1,0 +1,50 @@
+import re
+cal = '1 - 2 * (1+1)*( (60-30 +(-40/5) * (9-2*5/3 + 7 /3*99/4*2998 +10 * 568/14 )) - (-4*3)/ (16-3*2) )'
+symbol = []
+symbol_lv0 = ['(',')']
+# symbol_lv1 = ['**']
+symbol_lv2 = ['*','/','%']
+symbol_lv3 = ['+','-']
+cal = cal.strip().replace(' ','')
+# cal_notnum = re.findall(r'[^\d]',cal)
+cal_lv0 = re.findall(r'\([0-9-.+*/%]+\)',cal)        #找出所有最内层的括号
+# cal_lv1 = re.findall(r'\([^(.*]+?\)',cal)       #疑问
+print(cal_lv0)
+# print(cal_lv1)
+for i0 in cal_lv0:
+    i1 = re.findall(r'[^\d]',i0[1:-1])
+
+    if set(i1) <= set(symbol_lv3) or set(i1) <= set(symbol_lv2):
+        i_end = eval(i0)
+        i_end = str(i_end)
+        cal = cal.replace(i0,i_end)
+        # print('i0:',i0)
+    else:
+        i2 = re.findall(r'\d+[\d*/%]+\d',i0)
+        # print('i2:',i2)
+        for i3 in i2:
+            # print('i3:',i3)
+            i_end = eval(i3)
+            # print('i_end:',i_end)
+            i_end = str(i_end)
+            cal = cal.replace(i3,i_end)
+
+print(cal)
+cal_lv0 = re.findall(r'\([0-9-.+*/%]+\)',cal)
+print(cal_lv0)
+for i4 in cal_lv0:
+    i_end = eval(i4)
+    i_end = str(i_end)
+    cal = cal.replace(i4,i_end)
+print(cal)
+cal_lv0 = re.findall(r'\([0-9-.+*/%]+\)',cal)
+print(cal_lv0)
+
+    # print(i0,lv0)
+#循环，结束条件可以使cal只有数字，-，和.。
+# print(cal_notnum)
+# symbol = symbol_lv0+symbol_lv1+symbol+symbol_lv2+symbol_lv3
+# for i in cal_notnum:
+#     if i not in symbol:
+#         exit(code = '输入有误')
+# print(cal)
